@@ -28,5 +28,5 @@
     <item android:title="@string/chuck_browse_sql_database"
         android:id="@+id/browse_sql"
         app:showAsAction="never"
-        android:visible="true"/>
+        android:visible="false"/>
 </menu>
