@@ -19,10 +19,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.readystatesoftware.chuck.Chuck;
 import com.readystatesoftware.chuck.ChuckInterceptor;
+import com.readystatesoftware.chuck.internal.data.ChuckContentProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,22 @@ public class MainActivity extends AppCompatActivity {
                 launchChuckDirectly();
             }
         });
+        findViewById(R.id.export_json_data).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exportJsonData();
+            }
+        });
+    }
+
+    private void exportJsonData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String export = ChuckContentProvider.export(MainActivity.this);
+                Log.v("MainActivity", "Exported json:" + export);
+            }
+        }).run();
     }
 
     private OkHttpClient getClient(Context context) {
