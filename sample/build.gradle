@@ -32,7 +32,6 @@ dependencies {
 //    releaseCompile 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
 //    compile 'com.github.TonyTangAndroid:chuck:dev-SNAPSHOT'
-//    compile 'com.github.TonyTangAndroid.chuck:library:test-SNAPSHOT'
 
 
     compile "com.android.support:design:26.0.0"
