@@ -24,6 +24,9 @@ import android.view.View;
 import com.readystatesoftware.chuck.Chuck;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -51,11 +54,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private OkHttpClient getClient(Context context) {
+
+        ChuckInterceptor interceptor = new ChuckInterceptor(context)
+                .retainDataFor(ChuckInterceptor.Period.ONE_DAY)
+                .showNotification(true);
+        addFilters(interceptor);
+
         return new OkHttpClient.Builder()
                 // Add a ChuckInterceptor instance to your OkHttp client
-                .addInterceptor(new ChuckInterceptor(context))
+                .addInterceptor(interceptor)
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
+    }
+
+    private void addFilters(ChuckInterceptor interceptor) {
+        List<String> keyWordHeaderList = new ArrayList<>();
+        keyWordHeaderList.add("Access-Control-Allow-Credentials");
+        keyWordHeaderList.add("Access-Control-Allow-Origin");
+
+        List<String> keyWordUrlList = new ArrayList<>();
+        keyWordUrlList.add("cookies");
+        keyWordUrlList.add("auth");
+
+
+        interceptor.setFilterBody(true)
+                .setFilterHeaderList(keyWordHeaderList)
+                .setFilterUrlList(keyWordUrlList);
     }
 
     private void launchChuckDirectly() {
