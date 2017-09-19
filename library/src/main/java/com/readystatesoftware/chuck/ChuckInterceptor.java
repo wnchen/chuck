@@ -178,9 +178,7 @@ public final class ChuckInterceptor implements Interceptor {
     private boolean matches(String url, String regex) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(url);
-        boolean result = m.find();
-        Log.e("match","url:"+url+",regex:"+regex+",result:"+result);
-        return result;
+        return m.find();
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
