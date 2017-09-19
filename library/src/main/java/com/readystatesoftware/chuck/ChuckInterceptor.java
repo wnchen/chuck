@@ -33,6 +33,8 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -165,12 +167,20 @@ public final class ChuckInterceptor implements Interceptor {
             return null;
         }
         for (String keyWord : filterUrlList) {
-            if (url.contains(keyWord)){
+            if (matches(url, keyWord)){
                 int endIndex = url.lastIndexOf("?");
                 return endIndex > 0 ? url.substring(0, endIndex) : url;
             }
         }
         return null;
+    }
+
+    private boolean matches(String url, String regex) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(url);
+        boolean result = m.find();
+        Log.e("match","url:"+url+",regex:"+regex+",result:"+result);
+        return result;
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
