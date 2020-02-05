@@ -42,6 +42,7 @@ public class ChuckContentProvider extends ContentProvider {
     private static final int TRANSACTION = 0;
     private static final int TRANSACTIONS = 1;
     private static final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static final int MAX_LOG_TRANSACTION_COUNT = 100;
 
     private ChuckDbOpenHelper databaseHelper;
 
@@ -62,7 +63,11 @@ public class ChuckContentProvider extends ContentProvider {
             transactionArrayList.add(bunny);
         }
         iter.close();
-        return transactionArrayList;
+        int listSize = transactionArrayList.size();
+        if (listSize <= MAX_LOG_TRANSACTION_COUNT) {
+            return transactionArrayList;
+        }
+        return transactionArrayList.subList(listSize - MAX_LOG_TRANSACTION_COUNT, listSize);
     }
 
     @Override
